@@ -5,6 +5,8 @@
 package edu.neu.coe.info6205.randomwalk;
 
 import java.util.Random;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class RandomWalk {
 
@@ -20,8 +22,9 @@ public class RandomWalk {
      * @param dy the distance he moves in the y direction
      */
     private void move(int dx, int dy) {
-        // TO BE IMPLEMENTED  do move
-         throw new RuntimeException("Not implemented");
+        this.x += dx;
+        this.y += dy;
+
         // END SOLUTION
     }
 
@@ -31,8 +34,10 @@ public class RandomWalk {
      * @param m the number of steps the drunkard takes
      */
     private void randomWalk(int m) {
-        // TO BE IMPLEMENTED 
-throw new RuntimeException("implementation missing");
+
+        for (int i = 0; i < m; i++) {
+            randomMove();
+        }
     }
 
     /**
@@ -40,9 +45,11 @@ throw new RuntimeException("implementation missing");
      * That's to say, moves can be (+-1, 0) or (0, +-1).
      */
     private void randomMove() {
-        boolean ns = random.nextBoolean();
+        boolean isTrue = random.nextBoolean();
+
         int step = random.nextBoolean() ? 1 : -1;
-        move(ns ? step : 0, ns ? 0 : step);
+
+        move(isTrue ? step : 0, isTrue ? 0 : step);
     }
 
     /**
@@ -51,8 +58,9 @@ throw new RuntimeException("implementation missing");
      * @return the (Euclidean) distance from the origin to the current position.
      */
     public double distance() {
-        // TO BE IMPLEMENTED 
-         return 0.0;
+        // compute Euclidean distance
+        return Math.sqrt(x * x + y * y);
+
         // END SOLUTION
     }
 
@@ -76,10 +84,24 @@ throw new RuntimeException("implementation missing");
     public static void main(String[] args) {
         if (args.length == 0)
             throw new RuntimeException("Syntax: RandomWalk steps [experiments]");
+
         int m = Integer.parseInt(args[0]);
+
         int n = 30;
+
         if (args.length > 1) n = Integer.parseInt(args[1]);
+
         double meanDistance = randomWalkMulti(m, n);
+
+        // Run the experiment for an extra 50 times to collect more data points
+        int times = 50;
+
+        for (int i = 0; i < times; i++) {
+            System.out.printf("%.5f\n",randomWalkMulti(m, n));
+        }
+
+
+
         System.out.println(m + " steps: " + meanDistance + " over " + n + " experiments");
     }
 

@@ -41,7 +41,7 @@ public class ThreeSumQuadratic implements ThreeSum {
         List<Triple> triples = new ArrayList<>();
         int target = -a[j]; // We want a[i] + a[high] = -a[j]
 
-        // since data is sorted, we can use a two pointers on opposite ends, and move one or the other depending on their sum
+        // since data is sorted, we can use two pointers on opposite ends, and move one or the other depending on their sum
         int low = 0;
         int high = length - 1;
 

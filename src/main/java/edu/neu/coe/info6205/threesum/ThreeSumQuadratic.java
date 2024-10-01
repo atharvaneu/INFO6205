@@ -1,6 +1,7 @@
 package edu.neu.coe.info6205.threesum;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,8 +39,27 @@ public class ThreeSumQuadratic implements ThreeSum {
      */
     public List<Triple> getTriples(int j) {
         List<Triple> triples = new ArrayList<>();
-        // TO BE IMPLEMENTED  : for each candidate, test if a[i] + a[j] + a[k] = 0.
-throw new RuntimeException("implementation missing");
+        int target = -a[j]; // We want a[i] + a[high] = -a[j]
+
+        // since data is sorted, we can use a two pointers on opposite ends, and move one or the other depending on their sum
+        int low = 0;
+        int high = length - 1;
+
+        while (low < j && high > j) {
+            int sum = a[low] + a[high];
+
+            if (sum == target) {
+                triples.add(new Triple(a[low], a[j], a[high])); // Found a valid triple
+                low++;
+                high--;  // move i and high inward - closer to j
+            } else if (sum < target) {
+                low++;  // if sum is less than target, only move i toward j - implying we are increasing sum
+            } else {
+                high--;  // if sum is greater than target, only move high toward j - implying we are decreasing sum
+            }
+        }
+
+        return triples;
     }
 
     private final int[] a;

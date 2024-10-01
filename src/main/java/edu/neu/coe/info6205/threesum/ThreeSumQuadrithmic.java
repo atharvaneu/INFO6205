@@ -27,12 +27,12 @@ class ThreeSumQuadrithmic implements ThreeSum {
 
     public Triple[] getTriples() {
         List<Triple> triples = new ArrayList<>();
-        for (int i = 0; i < length; i++)
+        for (int i = 0; i < length; i++)  // takes N time
             for (int j = i + 1; j < length; j++) {
-                Triple triple = getTriple(i, j);
+                Triple triple = getTriple(i, j);      // binary search -> hence, log (N)
                 if (triple != null) triples.add(triple);
             }
-        Collections.sort(triples);
+        Collections.sort(triples);    // takes N log N
         return triples.stream().distinct().toArray(Triple[]::new);
     }
 

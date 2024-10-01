@@ -1,6 +1,7 @@
 package edu.neu.coe.info6205.threesum;
 
 import edu.neu.coe.info6205.util.Benchmark_Timer;
+import edu.neu.coe.info6205.util.Stopwatch;
 import edu.neu.coe.info6205.util.TimeLogger;
 import edu.neu.coe.info6205.util.Utilities;
 
@@ -13,16 +14,22 @@ public class ThreeSumBenchmark {
         this.runs = runs;
         this.supplier = new Source(n, m).intsSupplier(10);
         this.n = n;
+
+        stopwatch = new Stopwatch();
     }
 
     public void runBenchmarks() {
-        System.out.println("ThreeSumBenchmark: N=" + n);
+        System.out.println("\nThreeSumBenchmark: N=" + n);
         benchmarkThreeSum("ThreeSumQuadratic", (xs) -> new ThreeSumQuadratic(xs).getTriples(), n, timeLoggersQuadratic);
+        benchmarkThreeSum("ThreeSumQuadraticWithCalipers", (xs) -> new ThreeSumQuadraticWithCalipers(xs).getTriples(), n, timeLoggersQuadratic);
         benchmarkThreeSum("ThreeSumQuadrithmic", (xs) -> new ThreeSumQuadrithmic(xs).getTriples(), n, timeLoggersQuadrithmic);
         benchmarkThreeSum("ThreeSumCubic", (xs) -> new ThreeSumCubic(xs).getTriples(), n, timeLoggersCubic);
+
+        System.out.println("-----------------------------------------");
     }
 
     public static void main(String[] args) {
+
         new ThreeSumBenchmark(100, 250, 250).runBenchmarks();
         new ThreeSumBenchmark(50, 500, 500).runBenchmarks();
         new ThreeSumBenchmark(20, 1000, 1000).runBenchmarks();
@@ -33,9 +40,25 @@ public class ThreeSumBenchmark {
     }
 
     private void benchmarkThreeSum(final String description, final Consumer<int[]> function, int n, final TimeLogger[] timeLoggers) {
-        if (description.equals("ThreeSumCubic") && n > 4000) return;
-        // TO BE IMPLEMENTED 
-throw new RuntimeException("implementation missing");
+//        if (description.equals("ThreeSumCubic") && n > 4000) return;
+
+        System.out.println("\n" + description);
+
+        int[] input = supplier.get();
+
+        function.accept(input); // Apply the Consumer to the input array.
+
+        long duration = stopwatch.lap();
+
+        System.out.printf("Time elapsed:\t\t%d (milliSeconds)\n", duration);
+
+        /**
+         * uncomment below two lines if time logs are necessary
+         * I am commenting them because for my analysis, time logs are not needed - only the ETA running time of an algorithm is necessary
+         */
+        // timeLoggers[0].log("desc:", duration, n);
+        // timeLoggers[1].log("desc:", duration, n);
+
     }
 
     private final static TimeLogger[] timeLoggersCubic = {
@@ -54,4 +77,6 @@ throw new RuntimeException("implementation missing");
     private final int runs;
     private final Supplier<int[]> supplier;
     private final int n;
+
+    private final Stopwatch stopwatch;
 }

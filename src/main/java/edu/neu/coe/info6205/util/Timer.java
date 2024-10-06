@@ -61,7 +61,57 @@ public class Timer {
      */
     public <T, U> double repeat(int n, boolean warmup, Supplier<T> supplier, Function<T, U> function, UnaryOperator<T> preFunction, Consumer<U> postFunction) {
         // TO BE IMPLEMENTED : note that the timer is running when this method is called and should still be running when it returns.
-         return 0;
+
+        // run the functions without benchmarking
+        if (warmup) {
+            pause();
+            for (int i = 0; i < n; i++) {
+                T t = supplier.get();
+                if (preFunction != null) t = preFunction.apply(t);
+                U u = function.apply(t);
+                if (postFunction != null) postFunction.accept(u);
+            }
+            resume();
+
+            pause();
+            double result = meanLapTime();
+            resume();
+
+            return result;
+        }
+
+        for (int i = 0; i < n; i++) {
+            pause();
+            T t = supplier.get();
+            resume();
+
+            // we pause for the preFunction since we do not want to benchmark it, then resume after it's done
+            if (preFunction != null) {
+                pause();
+                t = preFunction.apply(t);
+                resume();
+            }
+
+            U u = function.apply(t);
+
+
+            lap();   // we call lap() after the function finishes running
+
+            // we pause for the postFunction since we do not want to benchmark it, then resume after it's done
+            if (postFunction != null) {
+                pause();
+                postFunction.accept(u);
+                resume();
+            }
+
+
+        }
+
+        pause();
+        double result = meanLapTime();
+        resume();
+
+        return result;
         // END SOLUTION
     }
 
@@ -187,8 +237,7 @@ public class Timer {
      * @return the number of ticks for the system clock. Currently defined as nano time.
      */
     private static long getClock() {
-        // TO BE IMPLEMENTED 
-         return 0;
+         return System.nanoTime();
         // END SOLUTION
     }
 
@@ -200,8 +249,7 @@ public class Timer {
      * @return the corresponding number of milliseconds.
      */
     private static double toMillisecs(long ticks) {
-        // TO BE IMPLEMENTED 
-         return 0;
+         return ticks / 1_000_000.0;
         // END SOLUTION
     }
 

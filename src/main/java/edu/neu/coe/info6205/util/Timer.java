@@ -60,7 +60,6 @@ public class Timer {
      * @return the average milliseconds per repetition.
      */
     public <T, U> double repeat(int n, boolean warmup, Supplier<T> supplier, Function<T, U> function, UnaryOperator<T> preFunction, Consumer<U> postFunction) {
-        // TO BE IMPLEMENTED : note that the timer is running when this method is called and should still be running when it returns.
 
         // run the functions without benchmarking
         if (warmup) {

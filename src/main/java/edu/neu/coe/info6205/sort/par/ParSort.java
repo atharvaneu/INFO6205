@@ -20,8 +20,8 @@ class ParSort {
         else {
             // FIXME next few lines should be removed from public repo.
             int mid = from + (to - from) / 2;
-            CompletableFuture<int[]> parsort1 = parsort(array, from, mid, pool); // TO IMPLEMENT
-            CompletableFuture<int[]> parsort2 = parsort(array, mid, to, pool); // TO IMPLEMENT
+            CompletableFuture<int[]> parsort1 = parsort(array, from, mid, pool);
+            CompletableFuture<int[]> parsort2 = parsort(array, mid, to, pool);
             CompletableFuture<int[]> parsort = parsort1.thenCombine(parsort2, ParSort::merge);
 
             parsort.whenComplete((result, throwable) -> System.arraycopy(result, 0, array, from, result.length));
@@ -32,7 +32,7 @@ class ParSort {
 
     private synchronized static int[] merge(int[] xs1, int[] xs2) {
         int[] result = new int[xs1.length + xs2.length];
-        // TO IMPLEMENT
+
         int i = 0, j = 0 ;
 
         // merge array xs1 and xs2
@@ -55,7 +55,7 @@ class ParSort {
         return CompletableFuture.supplyAsync(
                 () -> {
                     int[] result = new int[to - from];
-                    // TO IMPLEMENT
+
                     System.arraycopy(array, from, result, 0, result.length);
                     sort(result, 0, to - from, pool);
                     return result;

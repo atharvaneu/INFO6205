@@ -87,7 +87,7 @@ public class Main {
     private static void processCommand(String x, String y) {
         if (x.equalsIgnoreCase("N")) setConfig(x, Integer.parseInt(y));
         else
-            // TODO sort this out
+
             if (x.equalsIgnoreCase("P")) {
                 //noinspection ResultOfMethodCallIgnored
 //                ForkJoinPool.getCommonPoolParallelism();

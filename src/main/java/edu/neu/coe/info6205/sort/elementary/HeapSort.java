@@ -2,11 +2,34 @@ package edu.neu.coe.info6205.sort.elementary;
 
 import edu.neu.coe.info6205.sort.Helper;
 import edu.neu.coe.info6205.sort.SortWithComparableHelper;
+import edu.neu.coe.info6205.util.Config;
+
+import static edu.neu.coe.info6205.util.Config.*;
+import static edu.neu.coe.info6205.util.Config.CUTOFF_DEFAULT;
 
 public class HeapSort<X extends Comparable<X>> extends SortWithComparableHelper<X> {
 
     public HeapSort(Helper<X> helper) {
         super(helper);
+    }
+
+    /**
+     * Constructor for HeapSort
+     *
+     * @param N      the number elements we expect to sort.
+     * @param nRuns  the expected number of runs.
+     * @param config the configuration.
+     */
+    public HeapSort(int N, int nRuns, Config config) {
+        super(DESCRIPTION + getConfigString(config), N, nRuns, config);
+    }
+
+    private static String getConfigString(Config config) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+//        stringBuilder.append("currently sorting using HeapSort");
+
+        return stringBuilder.toString();
     }
 
     public void sort(X[] array, int from, int to) {
@@ -42,4 +65,6 @@ public class HeapSort<X extends Comparable<X>> extends SortWithComparableHelper<
             maxHeap(array, heapSize, largest);
         }
     }
+
+    private static final String DESCRIPTION = "HeapSort";
 }
